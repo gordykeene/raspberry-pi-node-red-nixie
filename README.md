@@ -1,6 +1,6 @@
 # Nixie Display Demo
 
-This Nixie Display Demo is a [Node-RED][nodered] Flow for the [Raspberry Pi][raspberrypi] and [Cathode Creations][cathodecreations] IN-8-2 Nixie board that demonsrates how to control the displays as well the LED illumination.
+This Nixie Display Demo is a [Node-RED][nodered] Flow for the [Raspberry Pi][raspberrypi] and [Cathode Creations][cathodecreations] IN-8-2 Nixie board that demonstrates how to control the displays as well the LED illumination.
 
 - Demonstrates how inject nodes can be used to update the entire display or to step individual digits in from the left.
 - Provides an example of how to write to the LEDs.
@@ -10,17 +10,17 @@ This Nixie Display Demo is a [Node-RED][nodered] Flow for the [Raspberry Pi][ras
 
 ### Nixie Display
 
-Each Cathode Creations [IN-8-2 Nixie Raspberry Pi board][nixie-board] display controls six single-digit nixie tubes. Unlike many simular looking products, this is not a clock, although it could certainly be used as one. Instead, it is a true arbitrary numeric display. Additionally, each tube can be individually illuminated. The $55 kit includes the PCB and the seperate components. Additionally, users will have to buy they own tubes (I found some on ebay delivered for about $10 each) and a 12v 2A power supply.
+Each Cathode Creations [IN-8-2 Nixie Raspberry Pi board][nixie-board] display controls six single-digit nixie tubes. Unlike many similar looking products, this is not a clock, although it could certainly be used as one. Instead, it is a true arbitrary numeric display. Additionally, each tube can be individually illuminated. The $55 kit includes the PCB and the separate components. Additionally, users will have to buy they own tubes (I found some on ebay delivered for about $10 each) and a 12v 2A power supply.
 
 ### Raspberry Pi
 
-A [Raspberry Pi][raspberrypi] is also required. I have used both an origional Raspberry Pi Model B and a Raspberry Pi 2 Model B. Because of the simple hardware requirement, I anticipate that many other models will work as well, as long as they at least offer the original 26 GPIO pins.
+A [Raspberry Pi][raspberrypi] is also required. I have used both an original Raspberry Pi Model B and a Raspberry Pi 2 Model B. Because of the simple hardware requirement, I anticipate that many other models will work as well, as long as they at least offer the original 26 GPIO pins.
 
 Additionally, all the normal Raspberry Pi accessories (SD card, 5Vdc supply) will be needed. I strongly encourage the use of a case, since the Nixie PC board will have high voltages present.
 
 # Software Setup
 
-The ultimate goal of the following is to end up with a [Raspberry Pi][raspberrypi] running [Node-RED][nodered]. The following outlines the process I used to setup the software for my display. There are many ways to accomplish this, and many users may have a Raspberry Pi already setup and ready to go. For those who might not, or want a quick start guide, this shoudl get you there.
+The ultimate goal of the following is to end up with a [Raspberry Pi][raspberrypi] running [Node-RED][nodered]. The following outlines the process I used to setup the software for my display. There are many ways to accomplish this, and many users may have a Raspberry Pi already setup and ready to go. For those who might not, or want a quick start guide, this should get you there.
 
 ### Setup Raspbian Jessie Lite
 
@@ -31,13 +31,13 @@ The ultimate goal of the following is to end up with a [Raspberry Pi][raspberryp
 
 The previous step shows how to open a terminal shell into the Raspberry Pi. Continuing in that shell, the following instructions will get Node-RED started.
 
-Depending on the path that lead to this point, it is possible Node-RED is aleady installed. Running the following command is a simple way to find out:
+Depending on the path that lead to this point, it is possible Node-RED is already installed. Running the following command is a simple way to find out:
 ```sh
 node-red-stop && node-red-start
 ```
 If a message indicating `Start Node-RED` appears, then Node-RED is already installed and the rest of this section can be skipped. However if a message indicating `command not found` appears, then Node-RED will have to be installed. The following instructions outline one way to accomplish that.
 
-Instructions appropriate for a Raspberry Pi are found on the [Node-RED Rapsberry Pi][nodered-raspberrypi] getting started guide. In many cases, it just boils down to pasting this block of text in to a terminal window.
+Instructions appropriate for a Raspberry Pi are found on the [Node-RED Raspberry Pi][nodered-raspberrypi] getting started guide. In many cases, it just boils down to pasting this block of text in to a terminal window.
 
 ```sh
 node-red-stop && \
@@ -48,7 +48,7 @@ node-red-start
 
 ### Opening Node-RED
 
-Once everything is assembled and Node-RED is running, you should be able to open it from a web browser. For a default installation, that will be `http://<raspberry-pi-IP-address>:1880/`. If that doesn't work, check that you have entered the correct IP address for the Raspberry PI. Also, inspect the `setting.js` file and locate the `uiPort` entery. Either of the following commands should help.
+Once everything is assembled and Node-RED is running, you should be able to open it from a web browser. For a default installation, that will be `http://<raspberry-pi-IP-address>:1880/`. If that doesn't work, check that you have entered the correct IP address for the Raspberry PI. Also, inspect the `setting.js` file and locate the `uiPort` entry. Either of the following commands should help.
 ```sh
 cat /home/pi/.node-red/settings.js | grep uiPort
 ```
@@ -58,25 +58,25 @@ sudo nano /home/pi/.node-red/settings.js
 ```
 ### Using nixie-display-demo in Node-RED
 
-With Node-RED open and an empty Flow tab visible, select the hamburger button in the upper right to open the menu. From the menu, select Import > Clipboard. Open the `nixie-display-demo.json` file, then select and copy it's contents. Return to Node-RED, paste the text and select Ok. Once the new Flow appeasr under the mouse, move it towards the upper left corner and click once. Select Deploy.
+With Node-RED open and an empty Flow tab visible, select the hamburger button in the upper right to open the menu. From the menu, select Import > Clipboard. Open the `nixie-display-demo.json` file, then select and copy it's contents. Return to Node-RED, paste the text and select Ok. Once the new Flow appears under the mouse, move it towards the upper left corner and click once. Select Deploy.
 
 Power on the Nixie display. Use any of the blue injectors on the left side to send the indicated payloads. Note that none displayable characters (such as `a`, `z` and `_` in the example) will appear as turned off Nixie tubes.
 
-Scroll down, and you will find a simular set of injectors for the LEDs.
+Scroll down, and you will find a similar set of injectors for the LEDs.
 
 ### Notes
 
-Before saving the .json file, it was run through the excellent [JSONLint][jsonlint] tool. I have found doing so makes identifying changes from the respository significantly easier than raw Node-RED output.
+Before saving the .json file, it was run through the excellent [JSONLint][jsonlint] tool. I have found doing so makes identifying changes from the repository significantly easier than raw Node-RED output.
 
 ### Version
 1.0.0
 
 ### Tech
 
-This project benifited from other projects:
+This project benefited from other projects:
 
 * [Dillinger] - Made with "Dillinger, the Last Markdown Editor ever."
-* [Cathode Creations][cathodecreations-gh] - Origional Python script for the Nixie Display.
+* [Cathode Creations][cathodecreations-gh] - original Python script for the Nixie Display.
 
 [//]: # (http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 

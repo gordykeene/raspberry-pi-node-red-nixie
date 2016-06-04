@@ -10,17 +10,17 @@ This Nixie Display Demo is a [Node-RED][nodered] Flow for the [Raspberry Pi][ras
 
 ### Nixie Display
 
-Each Cathode Creations [IN-8-2 Nixie Raspberry Pi board][nixie-board] display controls six single-digit nixie tubes. Unlike many similar looking products, this is not a clock, although it could certainly be used as one. Instead, it is a true arbitrary numeric display. Additionally, each tube can be individually illuminated. The $55 kit includes the PCB and the separate components. Additionally, users will have to buy they own tubes (I found some on ebay delivered for about $10 each) and a 12v 2A power supply.
+Each Cathode Creations [IN-8-2 Nixie Raspberry Pi board][nixie-board] display controls six single-digit nixie tubes. Unlike many similar looking products, this is not a clock, although it could certainly be used as one. Instead, it is a true arbitrary numeric display. Additionally, each tube can be individually illuminated. The $55 kit includes the PCB and the separate components. Users will have to provide their own a 12v 2A power supply and tubes (I found some on ebay delivered for about $10 each).
 
 ### Raspberry Pi
 
-A [Raspberry Pi][raspberrypi] is also required. I have used both an original Raspberry Pi Model B and a Raspberry Pi 2 Model B. Because of the simple hardware requirement, I anticipate that many other models will work as well, as long as they at least offer the original 26 GPIO pins.
+A [Raspberry Pi][raspberrypi] is also required. I have used both an original Raspberry Pi Model B and a Raspberry Pi 2 Model B. Because of the simple hardware requirement, I anticipate that many other models will also work, as long as they at least offer the original 26 GPIO pins.
 
 Additionally, all the normal Raspberry Pi accessories (SD card, 5Vdc supply) will be needed. I strongly encourage the use of a case, since the Nixie PC board will have high voltages present.
 
 # Software Setup
 
-The ultimate goal of the following is to end up with a [Raspberry Pi][raspberrypi] running [Node-RED][nodered]. The following outlines the process I used to setup the software for my display. There are many ways to accomplish this, and many users may have a Raspberry Pi already setup and ready to go. For those who might not, or want a quick start guide, this should get you there.
+The ultimate goal for these instructions is to end up with a [Raspberry Pi][raspberrypi] running [Node-RED][nodered]. The following outlines the process I used to setup the software for my display. There are many ways to accomplish this, and many users may already have a Raspberry Pi already setup and ready to go. For those who might not, or want a quick start guide, this should get you there.
 
 ### Setup Raspbian Jessie Lite
 
@@ -56,11 +56,12 @@ or
 ```sh
 sudo nano /home/pi/.node-red/settings.js
 ```
+
 ### Using nixie-display-demo in Node-RED
 
 With Node-RED open and an empty Flow tab visible, select the hamburger button in the upper right to open the menu. From the menu, select Import > Clipboard. Open the `nixie-display-demo.json` file, then select and copy it's contents. Return to Node-RED, paste the text and select Ok. Once the new Flow appears under the mouse, move it towards the upper left corner and click once. Select Deploy.
 
-Power on the Nixie display. Use any of the blue injectors on the left side to send the indicated payloads. Note that none displayable characters (such as `a`, `z` and `_` in the example) will appear as turned off Nixie tubes.
+Power on the Nixie display. In Node-RED, use any of the blue injectors on the left side to send the indicated payloads. Note that none displayable characters (such as `a`, `z` and `_` in the example) will appear as turned off Nixie tubes.
 
 Scroll down, and you will find a similar set of injectors for the LEDs.
 

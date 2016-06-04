@@ -1,0 +1,1233 @@
+[{
+	"id": "970ee1eb.787d68",
+	"type": "subflow",
+	"name": "Write bit [ data, clock, done ]",
+	"info": "",
+	"in": [{
+		"x": 40,
+		"y": 40,
+		"wires": [{
+			"id": "372e3f37.88da28"
+		}]
+	}],
+	"out": [{
+		"x": 380,
+		"y": 40,
+		"wires": [{
+			"id": "372e3f37.88da28",
+			"port": 0
+		}]
+	}, {
+		"x": 380,
+		"y": 120,
+		"wires": [{
+			"id": "e120f295.a086b",
+			"port": 0
+		}]
+	}, {
+		"x": 380,
+		"y": 160,
+		"wires": [{
+			"id": "611a92e6.486cfc",
+			"port": 0
+		}]
+	}]
+}, {
+	"id": "e120f295.a086b",
+	"type": "trigger",
+	"z": "970ee1eb.787d68",
+	"op1": "1",
+	"op2": "0",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "2",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 190,
+	"y": 120,
+	"wires": [
+		[]
+	]
+}, {
+	"id": "611a92e6.486cfc",
+	"type": "delay",
+	"z": "970ee1eb.787d68",
+	"name": "",
+	"pauseType": "delay",
+	"timeout": "3",
+	"timeoutUnits": "milliseconds",
+	"rate": "1",
+	"rateUnits": "second",
+	"randomFirst": "1",
+	"randomLast": "5",
+	"randomUnits": "seconds",
+	"drop": false,
+	"x": 190,
+	"y": 160,
+	"wires": [
+		[]
+	]
+}, {
+	"id": "372e3f37.88da28",
+	"type": "function",
+	"z": "970ee1eb.787d68",
+	"name": "(no change)",
+	"func": "return msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 190,
+	"y": 40,
+	"wires": [
+		["bc5e89f9.60d318"]
+	]
+}, {
+	"id": "bc5e89f9.60d318",
+	"type": "delay",
+	"z": "970ee1eb.787d68",
+	"name": "",
+	"pauseType": "delay",
+	"timeout": "1",
+	"timeoutUnits": "milliseconds",
+	"rate": "1",
+	"rateUnits": "second",
+	"randomFirst": "1",
+	"randomLast": "5",
+	"randomUnits": "seconds",
+	"drop": false,
+	"x": 190,
+	"y": 80,
+	"wires": [
+		["e120f295.a086b", "611a92e6.486cfc"]
+	]
+}, {
+	"id": "ee4d477f.f33d4",
+	"type": "subflow",
+	"name": "Write bitstring [ data, clock, done ]",
+	"info": "",
+	"in": [{
+		"x": 40,
+		"y": 40,
+		"wires": [{
+			"id": "33fc752f.ac2712"
+		}]
+	}],
+	"out": [{
+		"x": 460,
+		"y": 40,
+		"wires": [{
+			"id": "190e9620.5d197a",
+			"port": 0
+		}]
+	}, {
+		"x": 460,
+		"y": 100,
+		"wires": [{
+			"id": "190e9620.5d197a",
+			"port": 1
+		}]
+	}, {
+		"x": 460,
+		"y": 160,
+		"wires": [{
+			"id": "d2e59d28.202fb",
+			"port": 1
+		}]
+	}]
+}, {
+	"id": "190e9620.5d197a",
+	"type": "subflow:970ee1eb.787d68",
+	"z": "ee4d477f.f33d4",
+	"x": 240,
+	"y": 140,
+	"wires": [
+		[],
+		[],
+		["33fc752f.ac2712"]
+	]
+}, {
+	"id": "d2e59d28.202fb",
+	"type": "switch",
+	"z": "ee4d477f.f33d4",
+	"name": "More work?",
+	"property": "payload",
+	"propertyType": "msg",
+	"rules": [{
+		"t": "nnull"
+	}, {
+		"t": "else"
+	}],
+	"checkall": "true",
+	"outputs": 2,
+	"x": 190,
+	"y": 80,
+	"wires": [
+		["190e9620.5d197a"],
+		[]
+	]
+}, {
+	"id": "33fc752f.ac2712",
+	"type": "function",
+	"z": "ee4d477f.f33d4",
+	"name": "Prep next bit for display",
+	"func": "/* Expected input:\nmsg.nixie = {\n    bits: bits, // String of bits to be written, rightmost character first\n    pos: 0,     // Current position (iniitialize to zero)\n    length: bits.length, // Stop position + 1\n}\n*/\n\nmsg.payload = null;\n\nif (!!msg.nixie) {\n    try {\n        if (msg.nixie.length > msg.nixie.pos) {\n            msg.payload = msg.nixie.bits[msg.nixie.pos];\n            ++msg.nixie.pos;\n        }\n    } catch(ex) {\n        // done\n    }\n}\n\nreturn msg;\n",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 230,
+	"y": 40,
+	"wires": [
+		["d2e59d28.202fb"]
+	]
+}, {
+	"id": "e761c02b.6ee7f8",
+	"type": "subflow",
+	"name": "Write LEDs [ data, clock, done ]",
+	"info": "",
+	"in": [{
+		"x": 40,
+		"y": 40,
+		"wires": [{
+			"id": "a3fe64f1.ca38a"
+		}]
+	}],
+	"out": [{
+		"x": 460,
+		"y": 40,
+		"wires": [{
+			"id": "9512f390.3d36f8",
+			"port": 0
+		}]
+	}, {
+		"x": 460,
+		"y": 100,
+		"wires": [{
+			"id": "9512f390.3d36f8",
+			"port": 1
+		}]
+	}, {
+		"x": 460,
+		"y": 160,
+		"wires": [{
+			"id": "9512f390.3d36f8",
+			"port": 2
+		}]
+	}]
+}, {
+	"id": "a3fe64f1.ca38a",
+	"type": "function",
+	"z": "e761c02b.6ee7f8",
+	"name": "Build LED bits",
+	"func": "var backwardsBits = '' + msg.payload;\nvar bits = '';\nfor (var cp = backwardsBits.length - 1; 0 <= cp; --cp) {\n    bits += backwardsBits[cp];\n}\nnode.warn('(LED) msg.payload=' + msg.payload + ', bits=\"' + bits + '\"');\n\nmsg.nixie = {\n    bits: bits, // String of bits to be written, rightmost character first\n    pos: 0,     // Current position (iniitialize to zero)\n    length: bits.length, // Stop position + 1\n}\n\nreturn msg;\n",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 200,
+	"y": 40,
+	"wires": [
+		["9512f390.3d36f8"]
+	]
+}, {
+	"id": "9512f390.3d36f8",
+	"type": "subflow:ee4d477f.f33d4",
+	"z": "e761c02b.6ee7f8",
+	"x": 260,
+	"y": 100,
+	"wires": [
+		[],
+		[],
+		[]
+	]
+}, {
+	"id": "970ee1eb.787d68",
+	"type": "subflow",
+	"name": "Write bit [ data, clock, done ]",
+	"info": "",
+	"in": [{
+		"x": 40,
+		"y": 40,
+		"wires": [{
+			"id": "372e3f37.88da28"
+		}]
+	}],
+	"out": [{
+		"x": 380,
+		"y": 40,
+		"wires": [{
+			"id": "372e3f37.88da28",
+			"port": 0
+		}]
+	}, {
+		"x": 380,
+		"y": 120,
+		"wires": [{
+			"id": "e120f295.a086b",
+			"port": 0
+		}]
+	}, {
+		"x": 380,
+		"y": 160,
+		"wires": [{
+			"id": "611a92e6.486cfc",
+			"port": 0
+		}]
+	}]
+}, {
+	"id": "e120f295.a086b",
+	"type": "trigger",
+	"z": "970ee1eb.787d68",
+	"op1": "1",
+	"op2": "0",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "2",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 190,
+	"y": 120,
+	"wires": [
+		[]
+	]
+}, {
+	"id": "611a92e6.486cfc",
+	"type": "delay",
+	"z": "970ee1eb.787d68",
+	"name": "",
+	"pauseType": "delay",
+	"timeout": "3",
+	"timeoutUnits": "milliseconds",
+	"rate": "1",
+	"rateUnits": "second",
+	"randomFirst": "1",
+	"randomLast": "5",
+	"randomUnits": "seconds",
+	"drop": false,
+	"x": 190,
+	"y": 160,
+	"wires": [
+		[]
+	]
+}, {
+	"id": "372e3f37.88da28",
+	"type": "function",
+	"z": "970ee1eb.787d68",
+	"name": "(no change)",
+	"func": "return msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 190,
+	"y": 40,
+	"wires": [
+		["bc5e89f9.60d318"]
+	]
+}, {
+	"id": "bc5e89f9.60d318",
+	"type": "delay",
+	"z": "970ee1eb.787d68",
+	"name": "",
+	"pauseType": "delay",
+	"timeout": "1",
+	"timeoutUnits": "milliseconds",
+	"rate": "1",
+	"rateUnits": "second",
+	"randomFirst": "1",
+	"randomLast": "5",
+	"randomUnits": "seconds",
+	"drop": false,
+	"x": 190,
+	"y": 80,
+	"wires": [
+		["e120f295.a086b", "611a92e6.486cfc"]
+	]
+}, {
+	"id": "ee4d477f.f33d4",
+	"type": "subflow",
+	"name": "Write bitstring [ data, clock, done ]",
+	"info": "",
+	"in": [{
+		"x": 40,
+		"y": 40,
+		"wires": [{
+			"id": "33fc752f.ac2712"
+		}]
+	}],
+	"out": [{
+		"x": 460,
+		"y": 40,
+		"wires": [{
+			"id": "190e9620.5d197a",
+			"port": 0
+		}]
+	}, {
+		"x": 460,
+		"y": 100,
+		"wires": [{
+			"id": "190e9620.5d197a",
+			"port": 1
+		}]
+	}, {
+		"x": 460,
+		"y": 160,
+		"wires": [{
+			"id": "d2e59d28.202fb",
+			"port": 1
+		}]
+	}]
+}, {
+	"id": "190e9620.5d197a",
+	"type": "subflow:970ee1eb.787d68",
+	"z": "ee4d477f.f33d4",
+	"x": 240,
+	"y": 140,
+	"wires": [
+		[],
+		[],
+		["33fc752f.ac2712"]
+	]
+}, {
+	"id": "d2e59d28.202fb",
+	"type": "switch",
+	"z": "ee4d477f.f33d4",
+	"name": "More work?",
+	"property": "payload",
+	"propertyType": "msg",
+	"rules": [{
+		"t": "nnull"
+	}, {
+		"t": "else"
+	}],
+	"checkall": "true",
+	"outputs": 2,
+	"x": 190,
+	"y": 80,
+	"wires": [
+		["190e9620.5d197a"],
+		[]
+	]
+}, {
+	"id": "33fc752f.ac2712",
+	"type": "function",
+	"z": "ee4d477f.f33d4",
+	"name": "Prep next bit for display",
+	"func": "/* Expected input:\nmsg.nixie = {\n    bits: bits, // String of bits to be written, rightmost character first\n    pos: 0,     // Current position (iniitialize to zero)\n    length: bits.length, // Stop position + 1\n}\n*/\n\nmsg.payload = null;\n\nif (!!msg.nixie) {\n    try {\n        if (msg.nixie.length > msg.nixie.pos) {\n            msg.payload = msg.nixie.bits[msg.nixie.pos];\n            ++msg.nixie.pos;\n        }\n    } catch(ex) {\n        // done\n    }\n}\n\nreturn msg;\n",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 230,
+	"y": 40,
+	"wires": [
+		["d2e59d28.202fb"]
+	]
+}, {
+	"id": "7e2d3617.5e0b8",
+	"type": "subflow",
+	"name": "Write digits [ data, clock, done ]",
+	"info": "",
+	"in": [{
+		"x": 40,
+		"y": 40,
+		"wires": [{
+			"id": "5ff65c38.87de34"
+		}]
+	}],
+	"out": [{
+		"x": 460,
+		"y": 40,
+		"wires": [{
+			"id": "3289d54e.4c6d02",
+			"port": 0
+		}]
+	}, {
+		"x": 460,
+		"y": 100,
+		"wires": [{
+			"id": "3289d54e.4c6d02",
+			"port": 1
+		}]
+	}, {
+		"x": 460,
+		"y": 160,
+		"wires": [{
+			"id": "3289d54e.4c6d02",
+			"port": 2
+		}]
+	}]
+}, {
+	"id": "5ff65c38.87de34",
+	"type": "function",
+	"z": "7e2d3617.5e0b8",
+	"name": "Build digit bits",
+	"func": "var bits = buildBcd(msg.payload);\nnode.warn('(digits) msg.payload=' + msg.payload + ', bits=\"' + bits + '\"');\n\nmsg.nixie = {\n    bits: bits, // String of bits to be written, rightmost character first\n    pos: 0,     // Current position (iniitialize to zero)\n    length: bits.length, // Stop position + 1\n}\n\nreturn msg;\n\nfunction buildBcd(value) {\n    // Converts value to a sttring of BCD nibbles (4 bits) order by LSN first.\n    // node.warn('buildBcd-begin, value=' + value);\n    var result = '';\n    var valueString = '' + value;\n    for (var cp = valueString.length - 1; 0 <= cp; --cp) {\n        // node.warn('buildBcd-1, valueString[cp]=' + valueString[cp]);\n        var nibble;\n        if (isNaN(valueString[cp])) {\n            nibble = '1111';\n        } else {\n            nibble = '0000' + (parseInt(valueString[cp]) >>> 0).toString(2);\n            // node.warn('buildBcd-3, nibble=' + nibble);\n            nibble = nibble.substring(nibble.length - 4);\n        }\n        // node.warn('buildBcd-4, nibble=' + nibble);\n        result += nibble;\n    }\n    // node.warn('buildBcd-end, result=' + result);\n    return result;\n}\n",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 200,
+	"y": 40,
+	"wires": [
+		["3289d54e.4c6d02"]
+	]
+}, {
+	"id": "3289d54e.4c6d02",
+	"type": "subflow:ee4d477f.f33d4",
+	"z": "7e2d3617.5e0b8",
+	"x": 260,
+	"y": 100,
+	"wires": [
+		[],
+		[],
+		[]
+	]
+}, {
+	"id": "40093927.e1e1c",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "SER (11)",
+	"pin": "11",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 600,
+	"y": 40,
+	"wires": []
+}, {
+	"id": "117151a9.140626",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "SRCLK (12)",
+	"pin": "12",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 610,
+	"y": 80,
+	"wires": []
+}, {
+	"id": "2707678.2de8098",
+	"type": "trigger",
+	"z": "e7a28afe.0c94f",
+	"op1": "1",
+	"op2": "0",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "10",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 610,
+	"y": 120,
+	"wires": [
+		["7520ef75.90f82"]
+	]
+}, {
+	"id": "7520ef75.90f82",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "RCLK (8)",
+	"pin": "8",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 780,
+	"y": 120,
+	"wires": []
+}, {
+	"id": "5a43a812.b7885",
+	"type": "subflow:7e2d3617.5e0b8",
+	"z": "e7a28afe.0c94f",
+	"x": 322,
+	"y": 40,
+	"wires": [
+		["40093927.e1e1c"],
+		["117151a9.140626"],
+		["2707678.2de8098"]
+	]
+}, {
+	"id": "42fdbdb4.c6c50c",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "0",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 120,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "dd9df1f1.79f348",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "1",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 160,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "f700562a.2f279",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "2",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 200,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "13e0f57a.4ff5a3",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "3",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 240,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "d1f6051e.c932f8",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "4",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 280,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "60ad8ce9.cca98c",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "5",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 320,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "4023ea7e.e79a1c",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "6",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 360,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "6b9c1a15.01389c",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "7",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 400,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "687c8251.e8d1b4",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "8",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 440,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "5f2ab71.3ed28c8",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "9",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 480,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "85cd48a0.43b5d8",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "[space]",
+	"topic": "",
+	"payload": "X",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 520,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "e6f6a571.68f0f",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "123456",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 40,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "2c7ca139.b2bafe",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "1a3z5_",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 82,
+	"y": 80,
+	"wires": [
+		["5a43a812.b7885"]
+	]
+}, {
+	"id": "d511c815.2fcd48",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "LED SER (15)",
+	"pin": "15",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 592,
+	"y": 580,
+	"wires": []
+}, {
+	"id": "33af3ae5.280d1e",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "LED RCLK (19)",
+	"pin": "19",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 752,
+	"y": 660,
+	"wires": []
+}, {
+	"id": "4f917f4d.f6d2b",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "LED SRCLK (16)",
+	"pin": "16",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 602,
+	"y": 620,
+	"wires": []
+}, {
+	"id": "69ceb4e2.b5bccc",
+	"type": "subflow:e761c02b.6ee7f8",
+	"z": "e7a28afe.0c94f",
+	"x": 322,
+	"y": 600,
+	"wires": [
+		["d511c815.2fcd48"],
+		["4f917f4d.f6d2b"],
+		["9d84a196.e1eb68"]
+	]
+}, {
+	"id": "9d84a196.e1eb68",
+	"type": "trigger",
+	"z": "e7a28afe.0c94f",
+	"op1": "1",
+	"op2": "0",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "10",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 582,
+	"y": 660,
+	"wires": [
+		["33af3ae5.280d1e"]
+	]
+}, {
+	"id": "c513e711.4a782",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "101010",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 680,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "e24baf18.5695c",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "LED /OE (18)",
+	"pin": "18",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 860,
+	"y": 820,
+	"wires": []
+}, {
+	"id": "9a172169.f9c888",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "0 (LEDs on)",
+	"topic": "",
+	"payload": "0",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 510,
+	"y": 820,
+	"wires": [
+		["e24baf18.5695c"]
+	]
+}, {
+	"id": "66d26eef.4d6fb8",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "1 (LEDs off)",
+	"topic": "",
+	"payload": "1",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 510,
+	"y": 860,
+	"wires": [
+		["e24baf18.5695c"]
+	]
+}, {
+	"id": "82bd34db.78c03",
+	"type": "trigger",
+	"z": "e7a28afe.0c94f",
+	"op1": "1",
+	"op2": "0",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "500",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 680,
+	"y": 740,
+	"wires": [
+		["e24baf18.5695c"]
+	]
+}, {
+	"id": "9340f459.a8af78",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "Blink off-on",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 330,
+	"y": 740,
+	"wires": [
+		["82bd34db.78c03"]
+	]
+}, {
+	"id": "9a2d157c.959ab8",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "Blink on-off",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 330,
+	"y": 780,
+	"wires": [
+		["531a8eb1.f36d3"]
+	]
+}, {
+	"id": "531a8eb1.f36d3",
+	"type": "trigger",
+	"z": "e7a28afe.0c94f",
+	"op1": "0",
+	"op2": "1",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "500",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 680,
+	"y": 780,
+	"wires": [
+		["e24baf18.5695c"]
+	]
+}, {
+	"id": "784ce38f.e406dc",
+	"type": "rpi-gpio out",
+	"z": "e7a28afe.0c94f",
+	"name": "/OE (13)",
+	"pin": "13",
+	"set": true,
+	"level": "0",
+	"out": "out",
+	"x": 820,
+	"y": 280,
+	"wires": []
+}, {
+	"id": "77e2e01c.50584",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "0 (display on)",
+	"topic": "",
+	"payload": "0",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 490,
+	"y": 280,
+	"wires": [
+		["784ce38f.e406dc"]
+	]
+}, {
+	"id": "c8dd93d6.d2a2f",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "1 (display off)",
+	"topic": "",
+	"payload": "1",
+	"payloadType": "num",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 490,
+	"y": 320,
+	"wires": [
+		["784ce38f.e406dc"]
+	]
+}, {
+	"id": "c61a52cd.040c58",
+	"type": "trigger",
+	"z": "e7a28afe.0c94f",
+	"op1": "1",
+	"op2": "0",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "500",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 660,
+	"y": 200,
+	"wires": [
+		["784ce38f.e406dc"]
+	]
+}, {
+	"id": "8e96ed0.19be19",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "Blink off-on",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 310,
+	"y": 200,
+	"wires": [
+		["c61a52cd.040c58"]
+	]
+}, {
+	"id": "e977b5e6.391cb",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "Blink on-off",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 310,
+	"y": 240,
+	"wires": [
+		["ba2c42ff.9aa0d8"]
+	]
+}, {
+	"id": "ba2c42ff.9aa0d8",
+	"type": "trigger",
+	"z": "e7a28afe.0c94f",
+	"op1": "0",
+	"op2": "1",
+	"op1type": "val",
+	"op2type": "val",
+	"duration": "500",
+	"extend": false,
+	"units": "ms",
+	"reset": "",
+	"name": "",
+	"x": 660,
+	"y": 240,
+	"wires": [
+		["784ce38f.e406dc"]
+	]
+}, {
+	"id": "c6e3948d.ebd558",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "111111",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 640,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "76e0d97a.f323e8",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "000000",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 600,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "5904d427.b67164",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "010101",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 720,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "c8b0dc7d.d663",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "100000",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 780,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "a21812a5.a8201",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "010000",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 820,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "978a3eb6.49db1",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "001000",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 860,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "8efdadd5.953588",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "000100",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 900,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "9c806558.8f177",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "000010",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 940,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "f476556e.26fa38",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "000001",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 980,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}, {
+	"id": "d85ef437.4a6d58",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "0",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 1040,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	] 
+}, {
+	"id": "e4ff6bd9.857c48",
+	"type": "inject",
+	"z": "e7a28afe.0c94f",
+	"name": "",
+	"topic": "",
+	"payload": "1",
+	"payloadType": "str",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 90,
+	"y": 1080,
+	"wires": [
+		["69ceb4e2.b5bccc"]
+	]
+}]

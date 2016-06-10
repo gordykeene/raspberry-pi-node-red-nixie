@@ -40,7 +40,7 @@
 	"op2": "0",
 	"op1type": "val",
 	"op2type": "val",
-	"duration": "2",
+	"duration": "5",
 	"extend": false,
 	"units": "ms",
 	"reset": "",
@@ -56,7 +56,7 @@
 	"z": "970ee1eb.787d68",
 	"name": "",
 	"pauseType": "delay",
-	"timeout": "3",
+	"timeout": "8",
 	"timeoutUnits": "milliseconds",
 	"rate": "1",
 	"rateUnits": "second",
@@ -279,7 +279,7 @@
 	"op2": "0",
 	"op1type": "val",
 	"op2type": "val",
-	"duration": "2",
+	"duration": "5",
 	"extend": false,
 	"units": "ms",
 	"reset": "",
@@ -295,7 +295,7 @@
 	"z": "970ee1eb.787d68",
 	"name": "",
 	"pauseType": "delay",
-	"timeout": "3",
+	"timeout": "8",
 	"timeoutUnits": "milliseconds",
 	"rate": "1",
 	"rateUnits": "second",
@@ -1213,7 +1213,7 @@
 	"y": 1040,
 	"wires": [
 		["69ceb4e2.b5bccc"]
-	] 
+	]
 }, {
 	"id": "e4ff6bd9.857c48",
 	"type": "inject",

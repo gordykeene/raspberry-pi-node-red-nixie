@@ -72,6 +72,9 @@ Before saving the .json file, it was run through the excellent [JSONLint][jsonli
 ### Version
 1.0.0
 
+### Picture
+![Node-RED driving the display hardware](/images/sample1.jpg)
+
 ### Tech
 
 This project benefited from other projects:
